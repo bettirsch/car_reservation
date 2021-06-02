@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.example.jedi.mapper.CarMapper">
+	<resultMap id="carResult" type="com.example.jedi.model.Car">
+		<id property="carId" column="car_id" />
+		<result property="name" column="name" />
+		<result property="plateNumber" column="plate_number" />
+		<result property="nrOfWheel" column="nr_of_wheel" />
+	</resultMap>
+</mapper>
