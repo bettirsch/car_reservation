@@ -12,12 +12,8 @@ import com.example.jedi.service.PersonService;
 @Service
 public class PersonServiceImpl implements PersonService {
 
+	@Autowired
 	private PersonMapper personMapper;
-
-	@Autowired	
-	public PersonServiceImpl(PersonMapper personMapper) {
-		this.personMapper = personMapper;
-	}
 
 	@Override
 	public List<Person> getPersons() {

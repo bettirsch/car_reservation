@@ -12,13 +12,9 @@ import com.example.jedi.service.CarService;
 @Service
 public class CarServiceImpl implements CarService{
 
+	@Autowired
 	private CarMapper carMapper;
 	
-	@Autowired
-	public CarServiceImpl(CarMapper carMapper) {
-		this.carMapper = carMapper;
-	}
-
 	@Override
 	public List<Car> getCars() {
 		return carMapper.getCars();

@@ -18,6 +18,7 @@ public class LoggingAspect {
 
 	@Pointcut("within(@org.springframework.stereotype.Service *)")
 	public void executeLogging() {
+		//do nothing because @Around does the job
 	}
 
 	@Around(value = "executeLogging()")
@@ -29,24 +30,24 @@ public class LoggingAspect {
 	}
 
 	private void logBeforeProceed(ProceedingJoinPoint joinPoint) {
-		StringBuilder beforeMessage = new StringBuilder("Method: ");
+		var beforeMessage = new StringBuilder("Method: ");
 		beforeMessage.append(joinPoint.getSignature().getDeclaringType());
 		beforeMessage.append(".");
 		beforeMessage.append(joinPoint.getSignature().getName());
 		Object[] args = joinPoint.getArgs();
 		if (null!=args && args.length>0) {
 			beforeMessage.append(" args=[ | ");
-			Arrays.asList(args).forEach(arg->{
-				beforeMessage.append(arg).append(" | ");
-			});
+			Arrays.asList(args).forEach(arg->
+				beforeMessage.append(arg).append(" | ")
+			);
 			beforeMessage.append("]");
 			
 		}
-		LOGGER.info(beforeMessage.toString());
+		LOGGER.info("{}",beforeMessage);
 	}
 
 	private void logAfterProceed(ProceedingJoinPoint joinPoint, Object returnValue) {
-		StringBuilder afterMessage = new StringBuilder();
+		var afterMessage = new StringBuilder();
 		afterMessage.append(joinPoint.getSignature().getDeclaringType());
 		afterMessage.append(".");
 		afterMessage.append(joinPoint.getSignature().getName());
@@ -56,6 +57,6 @@ public class LoggingAspect {
 		} else {
 			afterMessage.append(returnValue.toString());
 		}
-		LOGGER.info(afterMessage.toString());
+		LOGGER.info("{}",afterMessage);
 	}
 }

@@ -14,12 +14,8 @@ import com.example.jedi.service.CarService;
 @RequestMapping("/rest/car")
 public class CarController {
 
-	private CarService carService;
-	
 	@Autowired
-	public CarController(CarService carService) {
-		this.carService = carService;
-	}
+	private CarService carService;
 	
 	@GetMapping("/all")
 	public List<Car> getAll() {

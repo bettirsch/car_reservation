@@ -16,15 +16,12 @@ import com.example.jedi.service.PersonService;
 @RestController
 @RequestMapping("/rest/person")
 public class PersonController {
-
-	private PersonService personService;
-	private CarService carService;
 	
 	@Autowired
-	public PersonController(PersonService personService, CarService carService) {
-		this.personService = personService;
-		this.carService = carService;
-	}
+	private PersonService personService;
+	
+	@Autowired
+	private CarService carService;
 	
 	@GetMapping("/all")
 	public List<Person> getAll(){
