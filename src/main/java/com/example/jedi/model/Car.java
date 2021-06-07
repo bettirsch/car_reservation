@@ -2,6 +2,8 @@ package com.example.jedi.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Car {
 	private Integer carId;
 
@@ -11,6 +13,7 @@ public class Car {
 
 	private Integer nrOfWheel;
 
+	@JsonIgnore
 	private List<Person> persons;
 
 	public Integer getCarId() {

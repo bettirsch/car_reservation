@@ -8,6 +8,6 @@ public interface CarService {
 
 	List<Car> getCars();
 
-	List<Car> findReservedCarsByPerson(Integer id);
+	public List<Car> findReservedCarsByPerson(Integer id);
 
 }

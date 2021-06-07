@@ -17,12 +17,12 @@ public class CarServiceImpl implements CarService{
 	
 	@Override
 	public List<Car> getCars() {
-		return carMapper.getCars();
+		return carMapper.select();
 	}
 
 	@Override
 	public List<Car> findReservedCarsByPerson(Integer personId) {
-		return carMapper.findReservedCarsByPerson(personId);
+		return carMapper.selectCarsByPersonId(personId);
 	}
 
 }

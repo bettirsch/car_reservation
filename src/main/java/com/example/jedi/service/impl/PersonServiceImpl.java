@@ -1,6 +1,7 @@
 package com.example.jedi.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,12 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	public List<Person> getPersons() {
-		return personMapper.getPersons();
+		return personMapper.select();
 	}
 
 	@Override
-	public Person getById(Integer id) {
-		return personMapper.getById(id);
+	public Optional<Person> getById(Integer id) {
+		return personMapper.selectOne(id);
 	}
 
 }
