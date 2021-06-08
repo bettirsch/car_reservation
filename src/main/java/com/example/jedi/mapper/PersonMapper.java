@@ -20,6 +20,8 @@ import org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 import static org.mybatis.dynamic.sql.SqlBuilder.*;
 
+import com.example.jedi.mapper.tablemap.CarTableMap;
+import com.example.jedi.mapper.tablemap.CarToPersonTableMap;
 import com.example.jedi.mapper.tablemap.PersonTableMap;
 import com.example.jedi.model.Person;
 
@@ -34,20 +36,24 @@ public interface PersonMapper
 	@SelectProvider(type = SqlProviderAdapter.class, method = "select")
 	@ResultMap("personResult")
 	Optional<Person> selectOne(SelectStatementProvider selectStatement);
-	
-	BasicColumn[] selectList = 
-			BasicColumn.columnList(PersonTableMap.PERSON_ID, PersonTableMap.FIRST_NAME,
-					PersonTableMap.LAST_NAME);
-	
+
+	BasicColumn[] selectList = BasicColumn.columnList(PersonTableMap.PERSON_TABLE.allColumns(), CarTableMap.CAR_TABLE.allColumns());
+
 	default List<Person> select() {
-		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(PersonTableMap.PERSON_TABLE);
+		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(PersonTableMap.PERSON_TABLE)
+				.join(CarToPersonTableMap.CAR_TO_PERSON_TABLE,
+						on(CarToPersonTableMap.PERSON_ID, equalTo(PersonTableMap.PERSON_ID)))
+				.join(CarTableMap.CAR_TABLE, on(CarToPersonTableMap.CAR_ID, equalTo(CarTableMap.CAR_ID)));
 		SelectDSLCompleter completer = c -> c;
 		return MyBatis3Utils.selectList(this::selectMany, select, completer);
 	}
-	
-	default Optional<Person> selectOne(Integer id){
-		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(PersonTableMap.PERSON_TABLE);
-		SelectDSLCompleter completer = c -> c.where(PersonTableMap.PERSON_ID, isEqualTo(id));
+
+	default Optional<Person> selectOne(Integer id) {
+		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(PersonTableMap.PERSON_TABLE)
+				.join(CarToPersonTableMap.CAR_TO_PERSON_TABLE,
+						on(CarToPersonTableMap.PERSON_ID, equalTo(PersonTableMap.PERSON_ID)))
+				.join(CarTableMap.CAR_TABLE, on(CarToPersonTableMap.CAR_ID, equalTo(CarTableMap.CAR_ID)));
+		SelectDSLCompleter completer = c -> c.where(CarToPersonTableMap.PERSON_ID, isEqualTo(id));
 		return MyBatis3Utils.selectOne(this::selectOne, select, completer);
 	}
 }
