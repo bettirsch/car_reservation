@@ -11,15 +11,15 @@ import com.example.jedi.model.Car;
 import com.example.jedi.service.CarService;
 
 @RestController
-@RequestMapping("/rest/car")
+@RequestMapping("/api/car")
 public class CarController {
 
 	@Autowired
 	private CarService carService;
 	
-	@GetMapping("/all")
+	@GetMapping("/all") 
 	public List<Car> getAll() {
-		return carService.getCars();
+		return carService.getAll();
 	}
 	
 }

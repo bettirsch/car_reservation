@@ -16,7 +16,7 @@ public class CarServiceImpl implements CarService{
 	private CarMapper carMapper;
 	
 	@Override
-	public List<Car> getCars() {
+	public List<Car> getAll() {
 		return carMapper.select();
 	}
 

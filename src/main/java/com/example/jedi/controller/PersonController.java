@@ -15,7 +15,7 @@ import com.example.jedi.service.CarService;
 import com.example.jedi.service.PersonService;
 
 @RestController
-@RequestMapping("/rest/person")
+@RequestMapping("/api/person")
 public class PersonController {
 	
 	@Autowired

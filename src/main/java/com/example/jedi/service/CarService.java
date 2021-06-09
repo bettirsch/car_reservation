@@ -6,7 +6,7 @@ import com.example.jedi.model.Car;
 
 public interface CarService {
 
-	List<Car> getCars();
+	List<Car> getAll();
 
 	public List<Car> findReservedCarsByPerson(Integer id);
 
