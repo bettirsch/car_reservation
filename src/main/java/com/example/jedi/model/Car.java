@@ -4,11 +4,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class Car {
 	private Integer carId;
 
@@ -20,6 +15,19 @@ public class Car {
 
 	@JsonIgnore
 	private List<Person> persons;
+
+	public Car() {
+		super();
+	}
+
+	public Car(Integer carId, String name, String plateNumber, Integer nrOfWheel, List<Person> persons) {
+		super();
+		this.carId = carId;
+		this.name = name;
+		this.plateNumber = plateNumber;
+		this.nrOfWheel = nrOfWheel;
+		this.persons = persons;
+	}
 
 	public Integer getCarId() {
 		return carId;

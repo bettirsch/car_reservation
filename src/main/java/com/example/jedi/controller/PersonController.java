@@ -36,6 +36,6 @@ public class PersonController {
 	
 	@GetMapping("/{id}/reservedCars")
 	public List<Car> getReservedCarsByPerson(@PathVariable Integer id){
-		return carService.findReservedCarsByPerson(id);
+		return carService.findCarsByPersonId(id);
 	}
 }

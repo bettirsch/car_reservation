@@ -21,7 +21,7 @@ public class CarServiceImpl implements CarService{
 	}
 
 	@Override
-	public List<Car> findReservedCarsByPerson(Integer personId) {
+	public List<Car> findCarsByPersonId(Integer personId) {
 		return carMapper.selectCarsByPersonId(personId);
 	}
 
