@@ -1,42 +1,46 @@
 package com.example.jedi.testingcontroller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class CarControllerTest {
+import com.example.jedi.controller.CarController;
+import com.example.jedi.mapper.model.Car;
+import com.example.jedi.service.CarService;
+
+@RunWith(MockitoJUnitRunner.class)
+public class CarControllerTest {
 	
-	@Autowired
-	private WebApplicationContext webApplicationContext;
-	private MockMvc mockMvc;
+	private CarController carController;
+	
+	@Mock
+	private CarService carService;
 
-	@BeforeAll
-	public void setUp() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+	private List<Car> cars;
+	private Car car;
+	
+	@Before
+	public void init() {
+		this.carController = new CarController(carService);
+		this.cars = new ArrayList<>();
+		this.car = new Car(1, "trabant", "ABC-123", 4, null);
+		this.cars.add(this.car);
 	}
-
+	
 	@Test
-	void getAll() throws Exception {
-		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/api/car/all").accept(MediaType.ALL))
-				.andExpect(status().isOk()).andReturn();
-		String json = result.getResponse().getContentAsString();
-		assertThat(json).isNotEmpty();
+	public void testGetAllCars() throws Exception {
+		when(this.carService.getAll()).thenReturn(cars);
+		
+		List<Car> result = this.carController.getAll();
+		assertThat(result).hasSameElementsAs(cars);
 	}
 
 }

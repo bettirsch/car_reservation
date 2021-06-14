@@ -1,4 +1,4 @@
-package com.example.jedi.model;
+package com.example.jedi.mapper.model;
 
 import java.util.List;
 
@@ -17,7 +17,6 @@ public class Car {
 	private List<Person> persons;
 
 	public Car() {
-		super();
 	}
 
 	public Car(Integer carId, String name, String plateNumber, Integer nrOfWheel, List<Person> persons) {

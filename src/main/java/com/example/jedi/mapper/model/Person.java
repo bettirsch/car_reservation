@@ -1,4 +1,4 @@
-package com.example.jedi.model;
+package com.example.jedi.mapper.model;
 
 import java.util.List;
 
@@ -11,6 +11,16 @@ public class Person {
 	private String lastName;
 
 	private List<Car> cars;
+
+	public Person() {
+	}
+
+	public Person(Integer personId, String firstName, String lastName, List<Car> cars) {
+		this.personId = personId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.cars = cars;
+	}
 
 	public Integer getPersonId() {
 		return personId;

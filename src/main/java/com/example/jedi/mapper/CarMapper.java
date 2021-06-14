@@ -17,9 +17,9 @@ import org.mybatis.dynamic.sql.select.render.SelectStatementProvider;
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
+import com.example.jedi.mapper.model.Car;
 import com.example.jedi.mapper.tablemap.CarTableMap;
 import com.example.jedi.mapper.tablemap.CarToPersonTableMap;
-import com.example.jedi.model.Car;
 
 @Mapper
 public interface CarMapper {
