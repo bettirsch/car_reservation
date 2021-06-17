@@ -10,6 +10,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.example.jedi.exception.DataNotFoundException;
+
 @Component
 @Aspect
 public class LoggingAspect {
@@ -22,8 +24,17 @@ public class LoggingAspect {
 	@Around(value = "executeLogging()")
 	public Object logMethodCall(ProceedingJoinPoint joinPoint) throws Throwable {
 		logBeforeProceed(joinPoint);
-		Object returnValue = joinPoint.proceed();
-		logAfterProceed(joinPoint, returnValue);
+		Object returnValue = null;
+		try {
+			returnValue = joinPoint.proceed();	
+			logAfterProceed(joinPoint, returnValue);
+		} catch (DataNotFoundException ex) {
+			LOGGER.error(ex.getMessage());
+			throw ex;
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+			throw e;
+		}
 		return returnValue;
 	}
 

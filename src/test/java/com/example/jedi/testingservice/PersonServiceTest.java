@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.example.jedi.exception.DataNotFoundException;
 import com.example.jedi.mapper.CarMapper;
 import com.example.jedi.mapper.PersonMapper;
 import com.example.jedi.mapper.model.Car;
@@ -67,8 +68,19 @@ public class PersonServiceTest {
 		setupTestData();
 		when(this.personMapper.selectOne(PERSON_ID)).thenReturn(Optional.of(this.person));
 		
-		Optional<Person> result = this.personService.getById(PERSON_ID);
-		assertThat(result).isNotEmpty().hasValue(this.person);
+		Person result = this.personService.getById(PERSON_ID);
+		assertThat(result).isNotNull();
+		assertThat(result.getPersonId(), is(PERSON_ID));
+		assertThat(result.getFirstName(), is(PERSON_FIRST_NAME));
+		assertThat(result.getLastName(), is(PERSON_LAST_NAME));
+		assertThat(result.getCars()).hasSameElementsAs(cars);
+	}
+	
+	@Test(expected = DataNotFoundException.class)
+	public void testGetPersonByIdMustThrowsExceptionIfNotFound() {
+		setupTestData();
+		when(this.personMapper.selectOne(PERSON_ID)).thenReturn(Optional.empty());
+		this.personService.getById(PERSON_ID);
 	}
 	
 	@Test

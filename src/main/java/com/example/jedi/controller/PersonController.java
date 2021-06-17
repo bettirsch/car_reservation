@@ -1,7 +1,6 @@
 package com.example.jedi.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +27,7 @@ public class PersonController {
 	}
 	
 	@GetMapping("/{id}")
-	public Optional<Person> getPerson(@PathVariable Integer id){
+	public Person getPerson(@PathVariable Integer id){
 		return personService.getById(id);
 	}
 	

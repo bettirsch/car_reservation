@@ -1,10 +1,10 @@
 package com.example.jedi.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.jedi.exception.DataNotFoundException;
 import com.example.jedi.mapper.CarMapper;
 import com.example.jedi.mapper.PersonMapper;
 import com.example.jedi.mapper.model.Car;
@@ -28,8 +28,8 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	@Override
-	public Optional<Person> getById(Integer id) {
-		return personMapper.selectOne(id);
+	public Person getById(Integer id) {
+		return personMapper.selectOne(id).orElseThrow(DataNotFoundException::new);
 	}
 	
 	@Override
