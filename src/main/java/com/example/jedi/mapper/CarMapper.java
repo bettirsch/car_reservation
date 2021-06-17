@@ -48,7 +48,7 @@ public interface CarMapper {
 	}
 
 	default List<Car> selectCarsByPersonId(Integer personId) {
-		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(CarTableMap.CAR_TABLE).join(
+		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(CarTableMap.CAR_TABLE).leftJoin(
 				CarToPersonTableMap.CAR_TO_PERSON_TABLE, on(CarToPersonTableMap.CAR_ID, equalTo(CarTableMap.CAR_ID)));
 		SelectDSLCompleter completer = c -> c.where(CarToPersonTableMap.PERSON_ID, isEqualTo(personId));
 		return MyBatis3Utils.selectList(this::selectMany, select, completer);

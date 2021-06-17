@@ -36,18 +36,18 @@ public interface PersonMapper{
 
 	default List<Person> select() {
 		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(PersonTableMap.PERSON_TABLE)
-				.join(CarToPersonTableMap.CAR_TO_PERSON_TABLE,
+				.leftJoin(CarToPersonTableMap.CAR_TO_PERSON_TABLE,
 						on(CarToPersonTableMap.PERSON_ID, equalTo(PersonTableMap.PERSON_ID)))
-				.join(CarTableMap.CAR_TABLE, on(CarToPersonTableMap.CAR_ID, equalTo(CarTableMap.CAR_ID)));
+				.leftJoin(CarTableMap.CAR_TABLE, on(CarToPersonTableMap.CAR_ID, equalTo(CarTableMap.CAR_ID)));
 		SelectDSLCompleter completer = c -> c;
 		return MyBatis3Utils.selectList(this::selectMany, select, completer);
 	}
 
 	default Optional<Person> selectOne(Integer id) {
 		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(PersonTableMap.PERSON_TABLE)
-				.join(CarToPersonTableMap.CAR_TO_PERSON_TABLE,
+				.leftJoin(CarToPersonTableMap.CAR_TO_PERSON_TABLE,
 						on(CarToPersonTableMap.PERSON_ID, equalTo(PersonTableMap.PERSON_ID)))
-				.join(CarTableMap.CAR_TABLE, on(CarToPersonTableMap.CAR_ID, equalTo(CarTableMap.CAR_ID)));
+				.leftJoin(CarTableMap.CAR_TABLE, on(CarToPersonTableMap.CAR_ID, equalTo(CarTableMap.CAR_ID)));
 		SelectDSLCompleter completer = c -> c.where(PersonTableMap.PERSON_ID, isEqualTo(id));
 		return MyBatis3Utils.selectOne(this::selectOne, select, completer);
 	}
