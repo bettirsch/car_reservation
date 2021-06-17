@@ -1,6 +1,8 @@
 package com.example.jedi.testingservice;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -22,50 +24,76 @@ import com.example.jedi.service.impl.PersonServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonServiceTest {
-	
-	private PersonService personService;
-	
+
+	private static final int CAR_NUMBER_OF_WHEEL = 4;
+	private static final String CAR_PLATE_NUMBER = "ABC-123";
+	private static final String CAR_NAME = "1967 Chevrolet Impala SS 427 Convertiblee";
+	private static final int CAR_ID = 1;
+	private static final int PERSON_ID = 1;
+	private static final String PERSON_FIRST_NAME = "Neil";
+	private static final String PERSON_LAST_NAME = "Robertson";
 	@Mock
 	private PersonMapper personMapper;
 	@Mock
 	private CarMapper carMapper;
+	
+	private PersonService personService;
 
 	private List<Person> persons;
 	private Person person;
+	private List<Car> cars;
 	
 	@Before
 	public void init() {
-		this.personService = new PersonServiceImpl(personMapper, carMapper);
-		this.persons = new ArrayList<>();
-		this.person = new Person(1, "Pista", "Kiss", null);
-		this.persons.add(this.person);
+		this.personService = new PersonServiceImpl(this.personMapper, this.carMapper);
 	}
 	
 	@Test
 	public void testGetPersons() {
-		when(personMapper.select()).thenReturn(persons);
+		setupTestData();
+		when(this.personMapper.select()).thenReturn(this.persons);
 		
-		List<Person> result =  personService.getPersons();
-		assertThat(result).hasSameElementsAs(persons);
+		List<Person> result =  this.personService.getPersons();
+		assertThat(result).isNotEmpty();
+		assertThat(result.size(), is(1));
+		assertThat(result.get(0).getPersonId(), is(PERSON_ID));
+		assertThat(result.get(0).getFirstName(), is(PERSON_FIRST_NAME));
+		assertThat(result.get(0).getLastName(), is(PERSON_LAST_NAME));
+		assertThat(result.get(0).getCars()).hasSameElementsAs(cars);
 	}
 	
 	@Test
 	public void testGetPersonById() {
-		when(personMapper.selectOne(1)).thenReturn(Optional.of(person));
+		setupTestData();
+		when(this.personMapper.selectOne(PERSON_ID)).thenReturn(Optional.of(this.person));
 		
-		Optional<Person> result = personService.getById(1);
-		assertThat(result).isNotEmpty().hasValue(person);
+		Optional<Person> result = this.personService.getById(PERSON_ID);
+		assertThat(result).isNotEmpty().hasValue(this.person);
 	}
 	
 	@Test
 	public void testFindCarsByPersonId() {
-		Integer personId = 1;
-		List<Car> cars = new ArrayList<>();
-		Car car = new Car(1, "trabant", "ABC-123", 4, persons);
-		cars.add(car);
-		when(carMapper.selectCarsByPersonId(personId)).thenReturn(cars);
+		setupTestData();
+		when(this.carMapper.selectCarsByPersonId(PERSON_ID)).thenReturn(this.cars);
 
-		List<Car> result = personService.findCarsByPersonId(personId);
-		assertThat(result).hasSameElementsAs(cars);
+		List<Car> result = this.personService.findCarsByPersonId(PERSON_ID);
+		assertThat(result).isNotEmpty();
+		assertThat(result.size(), is(1));
+		assertThat(result.get(0).getCarId(), is(CAR_ID));
+		assertThat(result.get(0).getName(), is(CAR_NAME));
+		assertThat(result.get(0).getPlateNumber(), is(CAR_PLATE_NUMBER));
+		assertThat(result.get(0).getNrOfWheel(), is(CAR_NUMBER_OF_WHEEL));
+		assertThat(result.get(0).getPersons()).hasSameElementsAs(this.persons);
+	}
+	
+	private void setupTestData() {
+		this.persons = new ArrayList<>();
+		this.cars = new ArrayList<>();
+		
+		this.person = new Person(PERSON_ID, PERSON_FIRST_NAME, PERSON_LAST_NAME, this.cars);
+		this.persons.add(this.person);
+
+		Car car = new Car(CAR_ID, CAR_NAME, CAR_PLATE_NUMBER, CAR_NUMBER_OF_WHEEL, this.persons);
+		cars.add(car);
 	}
 }
