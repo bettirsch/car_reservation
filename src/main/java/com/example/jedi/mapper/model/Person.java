@@ -54,4 +54,10 @@ public class Person {
 		this.cars = cars;
 	}
 
+	@Override
+	public String toString() {
+		return "Person [personId=" + personId + ", firstName=" + firstName + ", lastName=" + lastName + ", cars size=" + cars.size()
+				+ "]";
+	}
+
 }

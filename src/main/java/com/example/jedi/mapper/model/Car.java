@@ -68,4 +68,10 @@ public class Car {
 		this.persons = persons;
 	}
 
+	@Override
+	public String toString() {
+		return "Car [carId=" + carId + ", name=" + name + ", plateNumber=" + plateNumber + ", nrOfWheel=" + nrOfWheel
+				+ ", persons size=" + persons.size() + "]";
+	}
+
 }

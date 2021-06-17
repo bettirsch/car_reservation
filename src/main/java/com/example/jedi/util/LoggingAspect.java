@@ -17,9 +17,7 @@ public class LoggingAspect {
 	private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(LoggingAspect.class);
 
 	@Pointcut("within(@org.springframework.stereotype.Service *)")
-	public void executeLogging() {
-		//do nothing because @Around does the job
-	}
+	public void executeLogging() {}
 
 	@Around(value = "executeLogging()")
 	public Object logMethodCall(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -30,7 +28,7 @@ public class LoggingAspect {
 	}
 
 	private void logBeforeProceed(ProceedingJoinPoint joinPoint) {
-		var beforeMessage = new StringBuilder("Method: ");
+		StringBuilder beforeMessage = new StringBuilder("Method: ");
 		beforeMessage.append(joinPoint.getSignature().getDeclaringType());
 		beforeMessage.append(".");
 		beforeMessage.append(joinPoint.getSignature().getName());
@@ -47,7 +45,7 @@ public class LoggingAspect {
 	}
 
 	private void logAfterProceed(ProceedingJoinPoint joinPoint, Object returnValue) {
-		var afterMessage = new StringBuilder();
+		StringBuilder afterMessage = new StringBuilder();
 		afterMessage.append(joinPoint.getSignature().getDeclaringType());
 		afterMessage.append(".");
 		afterMessage.append(joinPoint.getSignature().getName());

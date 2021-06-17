@@ -54,7 +54,7 @@ public class PersonServiceTest {
 		when(personMapper.selectOne(1)).thenReturn(Optional.of(person));
 		
 		Optional<Person> result = personService.getById(1);
-		assertThat(result.get()).isNotNull();
+		assertThat(result).isNotEmpty().hasValue(person);
 	}
 	
 	@Test
