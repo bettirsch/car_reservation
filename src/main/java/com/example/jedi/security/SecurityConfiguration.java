@@ -34,9 +34,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// http.headers().frameOptions().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.authorizeRequests().antMatchers("/h2-console").permitAll().anyRequest().authenticated().and().httpBasic()
+		http.authorizeRequests().antMatchers("/h2-console/**").permitAll().and().csrf()
+				.ignoringAntMatchers("/h2-console/**").and().headers().frameOptions().sameOrigin();
+		http.authorizeRequests().antMatchers("/").permitAll().anyRequest().authenticated().and().httpBasic()
 				.authenticationEntryPoint(authenticationEntryPoint);
 	}
 
