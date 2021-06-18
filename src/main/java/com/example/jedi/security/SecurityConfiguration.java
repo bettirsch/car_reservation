@@ -17,25 +17,30 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Value("${login.username}")
 	private String userName;
-	
+
 	@Value("${login.password}")
 	private String password;
-	
+
 	@Value("${login.role}")
 	private String role;
-	
+
+	@Autowired
+	private CustomBasicAuthenticationEntryPoint authenticationEntryPoint;
+
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		auth.inMemoryAuthentication().passwordEncoder(encoder).withUser(userName).password(encoder.encode(password))
-				.roles(role);
+		auth.inMemoryAuthentication().withUser(userName).password(passwordEncoder().encode(password)).authorities(role);
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.headers().frameOptions().disable();
+		// http.headers().frameOptions().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.authorizeRequests().antMatchers("/h2-console/**").permitAll().anyRequest().authenticated()
-			.and().httpBasic();
+		http.authorizeRequests().antMatchers("/h2-console").permitAll().anyRequest().authenticated().and().httpBasic()
+				.authenticationEntryPoint(authenticationEntryPoint);
+	}
+
+	public PasswordEncoder passwordEncoder() {
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
 }
