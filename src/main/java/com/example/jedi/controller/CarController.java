@@ -15,12 +15,12 @@ public class CarController {
 
 	private CarService carService;
 	
-	public CarController(CarService carService) {
+	public CarController(CarService carService){
 		this.carService = carService;
 	}
 
 	@GetMapping("/all") 
-	public List<Car> getAll() {
+	public List<Car> getAll() throws RuntimeException{
 		return carService.getAll();
 	}
 	

@@ -22,17 +22,17 @@ public class PersonController {
 	}
 
 	@GetMapping("/all")
-	public List<Person> getAll(){
+	public List<Person> getAll() throws RuntimeException{
 		return personService.getPersons();
 	}
 	
 	@GetMapping("/{id}")
-	public Person getPerson(@PathVariable Integer id){
+	public Person getPerson(@PathVariable Integer id) throws RuntimeException{
 		return personService.getById(id);
 	}
 	
 	@GetMapping("/{id}/reservedCars")
-	public List<Car> getReservedCarsByPerson(@PathVariable Integer id){
+	public List<Car> getReservedCarsByPerson(@PathVariable Integer id) throws RuntimeException{
 		return personService.findCarsByPersonId(id);
 	}
 }
