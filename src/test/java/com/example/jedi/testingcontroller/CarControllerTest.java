@@ -56,6 +56,15 @@ public class CarControllerTest {
 		assertThat(result.get(0).getPersons(), is(PERSONS));
 	}
 	
+	@Test
+	public void testGetAllCarsEmpty() throws Exception {
+		this.cars = new ArrayList<>();
+		when(this.carService.getAll()).thenReturn(new ArrayList<>());
+		
+		List<Car> result = this.carController.getAll();
+		assertThat(result).isNotNull().isEmpty();
+	}
+	
 	private void setupTestData() {
 		this.cars = new ArrayList<>();
 		this.car = new Car(CAR_ID, CAR_NAME, CAR_PLATE_NUMBER, CAR_NUMBER_OF_WHEEL, PERSONS);

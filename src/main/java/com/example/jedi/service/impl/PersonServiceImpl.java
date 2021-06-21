@@ -29,12 +29,13 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	@Override
-	public Person getById(Integer id) {
+	public Person getById(Integer id) throws CustomException{
 		return personMapper.selectOne(id).orElseThrow(() -> new CustomException(ExceptionMessage.DATA_NOT_FOUND));
 	}
 	
 	@Override
-	public List<Car> findCarsByPersonId(Integer personId) {
+	public List<Car> findCarsByPersonId(Integer personId) throws CustomException{
+		this.getById(personId);
 		return carMapper.selectCarsByPersonId(personId);
 	}
 }

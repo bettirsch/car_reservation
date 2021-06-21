@@ -77,8 +77,7 @@ public class PersonServiceTest {
 	}
 	
 	@Test(expected = CustomException.class)
-	public void testGetPersonByIdMustThrowsExceptionIfNotFound() {
-		setupTestData();
+	public void testGetPersonByIdMustThrowsExceptionIfPersonNotFound() {
 		when(this.personMapper.selectOne(PERSON_ID)).thenReturn(Optional.empty());
 		this.personService.getById(PERSON_ID);
 	}
@@ -86,6 +85,7 @@ public class PersonServiceTest {
 	@Test
 	public void testFindCarsByPersonId() {
 		setupTestData();
+		when(this.personMapper.selectOne(PERSON_ID)).thenReturn(Optional.of(this.person));
 		when(this.carMapper.selectCarsByPersonId(PERSON_ID)).thenReturn(this.cars);
 
 		List<Car> result = this.personService.findCarsByPersonId(PERSON_ID);
@@ -96,6 +96,12 @@ public class PersonServiceTest {
 		assertThat(result.get(0).getPlateNumber(), is(CAR_PLATE_NUMBER));
 		assertThat(result.get(0).getNrOfWheel(), is(CAR_NUMBER_OF_WHEEL));
 		assertThat(result.get(0).getPersons()).hasSameElementsAs(this.persons);
+	}
+
+	@Test(expected = CustomException.class)
+	public void testFindCarsByPersonIdMustThrowsExceptionIfNotPersonFound() {
+		when(this.personMapper.selectOne(PERSON_ID)).thenReturn(Optional.empty());
+		this.personService.findCarsByPersonId(PERSON_ID);
 	}
 	
 	private void setupTestData() {

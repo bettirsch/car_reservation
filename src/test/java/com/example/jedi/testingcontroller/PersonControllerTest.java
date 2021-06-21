@@ -74,8 +74,7 @@ public class PersonControllerTest {
 	}
 
 	@Test(expected = CustomException.class)
-	public void testGetPersonByIdMustThrowsExceptionIfNotFound() {
-		setupTestData();
+	public void testGetPersonByIdMustThrowsExceptionIfPersonNotFound() {
 		when(this.personService.getById(PERSON_ID)).thenThrow(new CustomException(ExceptionMessage.DATA_NOT_FOUND));
 		this.personController.getPerson(PERSON_ID);
 	}
@@ -93,6 +92,12 @@ public class PersonControllerTest {
 		assertThat(result.get(0).getPlateNumber(), is(CAR_PLATE_NUMBER));
 		assertThat(result.get(0).getNrOfWheel(), is(CAR_NUMBER_OF_WHEEL));
 		assertThat(result.get(0).getPersons()).hasSameElementsAs(this.persons);
+	}
+
+	@Test(expected = CustomException.class)
+	public void testFindCarsByPersonIdMustThrowsExceptionIfPersonNotFound() {
+		when(this.personService.findCarsByPersonId(PERSON_ID)).thenThrow(new CustomException(ExceptionMessage.DATA_NOT_FOUND));
+		this.personController.getReservedCarsByPerson(PERSON_ID);
 	}
 
 	private void setupTestData() {
