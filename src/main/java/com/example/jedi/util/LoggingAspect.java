@@ -29,11 +29,8 @@ public class LoggingAspect {
 			returnValue = joinPoint.proceed();	
 			logAfterProceed(joinPoint, returnValue);
 		} catch (CustomException ex) {
-			LOGGER.error(ex.getMessage());
+			LOGGER.error("Custom exception: {}", ex.getLocalizedMessage());
 			throw ex;
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
-			throw e;
 		}
 		return returnValue;
 	}
