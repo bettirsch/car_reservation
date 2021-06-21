@@ -31,11 +31,12 @@ public interface PersonMapper{
 	@SelectProvider(type = SqlProviderAdapter.class, method = "select")
 	@ResultMap("com.example.jedi.mapper.PersonMapper.personResult")
 	Optional<Person> selectOne(SelectStatementProvider selectStatement);
-
+	
+	BasicColumn[] selectSimpleList = BasicColumn.columnList(PersonTableMap.PERSON_TABLE.allColumns(), CarTableMap.CAR_TABLE.allColumns());
 	BasicColumn[] selectList = BasicColumn.columnList(PersonTableMap.PERSON_TABLE.allColumns(), CarTableMap.CAR_TABLE.allColumns());
 
 	default List<Person> select() {
-		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(PersonTableMap.PERSON_TABLE)
+		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectSimpleList).from(PersonTableMap.PERSON_TABLE)
 				.leftJoin(CarToPersonTableMap.CAR_TO_PERSON_TABLE,
 						on(CarToPersonTableMap.PERSON_ID, equalTo(PersonTableMap.PERSON_ID)))
 				.leftJoin(CarTableMap.CAR_TABLE, on(CarToPersonTableMap.CAR_ID, equalTo(CarTableMap.CAR_ID)));

@@ -1,13 +1,13 @@
 package com.example.jedi.mapper;
 
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.SelectProvider;
-import static org.mybatis.dynamic.sql.SqlBuilder.*;
-
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.SqlBuilder;
 import org.mybatis.dynamic.sql.select.QueryExpressionDSL;
@@ -19,7 +19,6 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 import com.example.jedi.mapper.model.Car;
 import com.example.jedi.mapper.tablemap.CarTableMap;
-import com.example.jedi.mapper.tablemap.CarToPersonTableMap;
 
 @Mapper
 public interface CarMapper {
@@ -32,8 +31,7 @@ public interface CarMapper {
 	@ResultMap("carResult")
 	Optional<Car> selectOne(SelectStatementProvider selectStatement);
 
-	BasicColumn[] selectList = BasicColumn.columnList(CarTableMap.CAR_ID, CarTableMap.NAME, CarTableMap.PLATE_NUMBER,
-			CarTableMap.NR_OF_WHEEL);
+	BasicColumn[] selectList = BasicColumn.columnList(CarTableMap.CAR_TABLE.allColumns());
 
 	default List<Car> select() {
 		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(CarTableMap.CAR_TABLE);
@@ -45,12 +43,5 @@ public interface CarMapper {
 		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(CarTableMap.CAR_TABLE);
 		SelectDSLCompleter completer = c -> c.where(CarTableMap.CAR_ID, isEqualTo(id));
 		return MyBatis3Utils.selectOne(this::selectOne, select, completer);
-	}
-
-	default List<Car> selectCarsByPersonId(Integer personId) {
-		QueryExpressionDSL<SelectModel> select = SqlBuilder.select(selectList).from(CarTableMap.CAR_TABLE).leftJoin(
-				CarToPersonTableMap.CAR_TO_PERSON_TABLE, on(CarToPersonTableMap.CAR_ID, equalTo(CarTableMap.CAR_ID)));
-		SelectDSLCompleter completer = c -> c.where(CarToPersonTableMap.PERSON_ID, isEqualTo(personId));
-		return MyBatis3Utils.selectList(this::selectMany, select, completer);
 	}
 }

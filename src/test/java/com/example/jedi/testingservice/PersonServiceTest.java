@@ -46,7 +46,7 @@ public class PersonServiceTest {
 	
 	@Before
 	public void init() {
-		this.personService = new PersonServiceImpl(this.personMapper, this.carMapper);
+		this.personService = new PersonServiceImpl(this.personMapper);
 	}
 	
 	@Test
@@ -86,7 +86,6 @@ public class PersonServiceTest {
 	public void testFindCarsByPersonId() {
 		setupTestData();
 		when(this.personMapper.selectOne(PERSON_ID)).thenReturn(Optional.of(this.person));
-		when(this.carMapper.selectCarsByPersonId(PERSON_ID)).thenReturn(this.cars);
 
 		List<Car> result = this.personService.findCarsByPersonId(PERSON_ID);
 		assertThat(result).isNotEmpty();
