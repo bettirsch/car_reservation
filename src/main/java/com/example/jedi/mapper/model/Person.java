@@ -56,8 +56,8 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return "Person [personId=" + personId + ", firstName=" + firstName + ", lastName=" + lastName + ", cars size=" + cars.size()
-				+ "]";
+		return "Person [personId=" + personId + ", firstName=" + firstName + ", lastName=" + lastName + ", cars size="
+				+ (cars == null ? "null" : cars.size()) + "]";
 	}
 
 }

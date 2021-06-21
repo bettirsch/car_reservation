@@ -71,7 +71,7 @@ public class Car {
 	@Override
 	public String toString() {
 		return "Car [carId=" + carId + ", name=" + name + ", plateNumber=" + plateNumber + ", nrOfWheel=" + nrOfWheel
-				+ ", persons size=" + persons.size() + "]";
+				+ ", persons size=" + (persons == null ? "null" : persons.size()) + "]";
 	}
 
 }
