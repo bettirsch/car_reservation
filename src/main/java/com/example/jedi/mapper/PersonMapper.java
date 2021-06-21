@@ -32,7 +32,7 @@ public interface PersonMapper{
 	@ResultMap("com.example.jedi.mapper.PersonMapper.personResult")
 	Optional<Person> selectOne(SelectStatementProvider selectStatement);
 	
-	BasicColumn[] selectSimpleList = BasicColumn.columnList(PersonTableMap.PERSON_TABLE.allColumns(), CarTableMap.CAR_TABLE.allColumns());
+	BasicColumn[] selectSimpleList = BasicColumn.columnList(PersonTableMap.PERSON_TABLE.allColumns());
 	BasicColumn[] selectList = BasicColumn.columnList(PersonTableMap.PERSON_TABLE.allColumns(), CarTableMap.CAR_TABLE.allColumns());
 
 	default List<Person> select() {
