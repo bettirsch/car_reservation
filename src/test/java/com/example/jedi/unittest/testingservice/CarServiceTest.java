@@ -1,4 +1,4 @@
-package com.example.jedi.testingcontroller;
+package com.example.jedi.unittest.testingservice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -14,18 +14,19 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.example.jedi.controller.CarController;
+import com.example.jedi.mapper.CarMapper;
 import com.example.jedi.mapper.model.Car;
 import com.example.jedi.mapper.model.Person;
 import com.example.jedi.service.CarService;
+import com.example.jedi.service.impl.CarServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CarControllerTest {
+public class CarServiceTest {
 	
 	@Mock
-	private CarService carService;
+	private CarMapper carMapper;
 	
-	private CarController carController;
+	private CarService carService;
 
 	private List<Car> cars;
 	private Car car;
@@ -38,33 +39,24 @@ public class CarControllerTest {
 	
 	@Before
 	public void init() {
-		this.carController = new CarController(carService);
+		this.carService = new CarServiceImpl(this.carMapper);
 	}
 	
 	@Test
-	public void testGetAllCars() throws Exception {
+	public void testGetAllCars() {
 		setupTestData();
-		when(this.carService.getAll()).thenReturn(cars);
-		
-		List<Car> result = this.carController.getAll();
+		when(this.carMapper.select()).thenReturn(this.cars);
+
+		List<Car> result = this.carService.getAll();
 		assertThat(result).isNotEmpty();
 		assertThat(result.size(), is(1));
 		assertThat(result.get(0).getCarId(), is(CAR_ID));
 		assertThat(result.get(0).getName(), is(CAR_NAME));
 		assertThat(result.get(0).getPlateNumber(), is(CAR_PLATE_NUMBER));
 		assertThat(result.get(0).getNrOfWheel(), is(CAR_NUMBER_OF_WHEEL));
-		assertThat(result.get(0).getPersons(), is(PERSONS));
+		assertThat(result.get(0).getPersons()).hasSameElementsAs(PERSONS);
 	}
-	
-	@Test
-	public void testGetAllCarsEmpty() throws Exception {
-		this.cars = new ArrayList<>();
-		when(this.carService.getAll()).thenReturn(new ArrayList<>());
-		
-		List<Car> result = this.carController.getAll();
-		assertThat(result).isNotNull().isEmpty();
-	}
-	
+
 	private void setupTestData() {
 		this.cars = new ArrayList<>();
 		this.car = new Car(CAR_ID, CAR_NAME, CAR_PLATE_NUMBER, CAR_NUMBER_OF_WHEEL, PERSONS);
