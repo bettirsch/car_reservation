@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.jedi.exception.CustomException;
+import com.example.jedi.exception.ExceptionMessage;
 import com.example.jedi.mapper.CarMapper;
 import com.example.jedi.mapper.model.Car;
 import com.example.jedi.service.CarService;
@@ -20,6 +22,11 @@ public class CarServiceImpl implements CarService{
 	@Override
 	public List<Car> getAll() {
 		return carMapper.select();
+	}
+
+	@Override
+	public Car getById(Integer carId) throws CustomException {
+		return carMapper.selectOne(carId).orElseThrow(() -> new CustomException(ExceptionMessage.CAR_NOT_FOUND));
 	}
 
 }

@@ -43,7 +43,7 @@ public class CarMapperTest {
 		Optional<Car> result = this.carMapper.selectOne(546724454);
 		assertThat(result).isEmpty();
 	};
-	
+
 	@Test
 	public void testSelect() {
 		List<Car> result = this.carMapper.select();
@@ -52,7 +52,23 @@ public class CarMapperTest {
 		assertThat(result.get(0).getName(), is(CAR_NAME));
 		assertThat(result.get(0).getPlateNumber(), is(CAR_PLATE_NUMBER));
 		assertThat(result.get(0).getNrOfWheel(), is(CAR_NUMBER_OF_WHEEL));
-		assertThat(result.get(0).getPersons()).isNull();;
+		assertThat(result.get(0).getPersons()).isNull();
 	};
 
+	@Test
+	public void testFindCarById() {
+		Optional<Car> result = this.carMapper.selectOne(CAR_ID);
+		assertThat(result).isNotNull().isNotEmpty();
+		assertThat(result.get().getCarId(), is(CAR_ID));
+		assertThat(result.get().getName(), is(CAR_NAME));
+		assertThat(result.get().getPlateNumber(), is(CAR_PLATE_NUMBER));
+		assertThat(result.get().getNrOfWheel(), is(CAR_NUMBER_OF_WHEEL));
+		assertThat(result.get().getPersons()).isNull();
+	}
+
+	@Test
+	public void testFindCarByIdMustThrowsCustomExceptionIfCarNotFound() {
+		Optional<Car> result = this.carMapper.selectOne(546724454);
+		assertThat(result).isEmpty();
+	}
 }

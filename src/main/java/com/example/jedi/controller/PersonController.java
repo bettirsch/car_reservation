@@ -23,7 +23,7 @@ public class PersonController {
 	}
 
 	@GetMapping("/all")
-	public List<Person> getAll() throws CustomException {
+	public List<Person> getAll() {
 		return personService.getPersons();
 	}
 

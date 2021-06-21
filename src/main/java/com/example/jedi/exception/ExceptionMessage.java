@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 
 public enum ExceptionMessage {
 
-	DATA_NOT_FOUND("data.0001");
+	PERSON_NOT_FOUND("data.0001"),
+	CAR_NOT_FOUND("data.0002");
 	
 	private final String messageCode;
 	private final ResourceBundle resourceBundle;

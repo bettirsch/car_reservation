@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.example.jedi.exception.CustomException;
 import com.example.jedi.mapper.CarMapper;
 import com.example.jedi.mapper.model.Car;
 import com.example.jedi.mapper.model.Person;
@@ -57,6 +59,26 @@ public class CarServiceTest {
 		assertThat(result.get(0).getPersons()).hasSameElementsAs(PERSONS);
 	}
 
+	@Test
+	public void testFindCarById() {
+		setupTestData();
+		when(this.carMapper.selectOne(CAR_ID)).thenReturn(Optional.of(this.car));
+		
+		Car result = this.carService.getById(CAR_ID);
+		assertThat(result).isNotNull();
+		assertThat(result.getCarId(), is(CAR_ID));
+		assertThat(result.getName(), is(CAR_NAME));
+		assertThat(result.getPlateNumber(), is(CAR_PLATE_NUMBER));
+		assertThat(result.getNrOfWheel(), is(CAR_NUMBER_OF_WHEEL));
+		assertThat(result.getPersons()).isNotNull().isEmpty();
+	}
+	
+	@Test(expected = CustomException.class)
+	public void testFindCarByIdMustThrowsCustomExceptionIfCarNotFound() {
+		when(this.carMapper.selectOne(CAR_ID)).thenReturn(Optional.empty());
+		this.carService.getById(CAR_ID);
+	}
+	
 	private void setupTestData() {
 		this.cars = new ArrayList<>();
 		this.car = new Car(CAR_ID, CAR_NAME, CAR_PLATE_NUMBER, CAR_NUMBER_OF_WHEEL, PERSONS);

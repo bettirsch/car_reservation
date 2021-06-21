@@ -27,7 +27,7 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	public Person getById(Integer id) throws CustomException {
-		return personMapper.selectOne(id).orElseThrow(() -> new CustomException(ExceptionMessage.DATA_NOT_FOUND));
+		return personMapper.selectOne(id).orElseThrow(() -> new CustomException(ExceptionMessage.PERSON_NOT_FOUND));
 	}
 
 	@Override

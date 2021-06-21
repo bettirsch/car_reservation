@@ -3,6 +3,7 @@ package com.example.jedi.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,14 +16,19 @@ import com.example.jedi.service.CarService;
 public class CarController {
 
 	private CarService carService;
-	
-	public CarController(CarService carService){
+
+	public CarController(CarService carService) {
 		this.carService = carService;
 	}
 
-	@GetMapping("/all") 
-	public List<Car> getAll() throws CustomException{
+	@GetMapping("/all")
+	public List<Car> getAll() {
 		return carService.getAll();
 	}
-	
+
+	@GetMapping("/{id}")
+	public Car getCarById(@PathVariable Integer id) throws CustomException {
+		return carService.getById(id);
+	}
+
 }

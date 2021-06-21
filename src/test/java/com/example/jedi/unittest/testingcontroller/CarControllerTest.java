@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.example.jedi.controller.CarController;
+import com.example.jedi.exception.CustomException;
+import com.example.jedi.exception.ExceptionMessage;
 import com.example.jedi.mapper.model.Car;
 import com.example.jedi.mapper.model.Person;
 import com.example.jedi.service.CarService;
@@ -63,6 +65,26 @@ public class CarControllerTest {
 		
 		List<Car> result = this.carController.getAll();
 		assertThat(result).isNotNull().isEmpty();
+	}
+	
+	@Test
+	public void testFindCarById() {
+		setupTestData();
+		when(this.carService.getById(CAR_ID)).thenReturn(this.car);
+		
+		Car result = this.carController.getCarById(CAR_ID);
+		assertThat(result).isNotNull();
+		assertThat(result.getCarId(), is(CAR_ID));
+		assertThat(result.getName(), is(CAR_NAME));
+		assertThat(result.getPlateNumber(), is(CAR_PLATE_NUMBER));
+		assertThat(result.getNrOfWheel(), is(CAR_NUMBER_OF_WHEEL));
+		assertThat(result.getPersons()).isNotNull().isEmpty();
+	}
+	
+	@Test(expected = CustomException.class)
+	public void testFindCarByIdMustThrowsCustomExceptionIfCarNotFound() {
+		when(this.carService.getById(CAR_ID)).thenThrow(new CustomException(ExceptionMessage.CAR_NOT_FOUND));
+		this.carController.getCarById(CAR_ID);
 	}
 	
 	private void setupTestData() {
