@@ -32,7 +32,7 @@ public class PersonController {
 		return personService.getById(id);
 	}
 
-	@GetMapping("/{id}/reservedCars")
+	@GetMapping("/{id}/cars")
 	public List<Car> getReservedCarsByPerson(@PathVariable Integer id) throws DataNotFoundException {
 		return personService.findCarsByPersonId(id);
 	}
