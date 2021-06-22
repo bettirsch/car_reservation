@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.example.jedi.controller.PersonController;
-import com.example.jedi.exception.CustomException;
+import com.example.jedi.exception.DataNotFoundException;
 import com.example.jedi.exception.ExceptionMessage;
 import com.example.jedi.mapper.model.Car;
 import com.example.jedi.mapper.model.Person;
@@ -73,9 +73,9 @@ public class PersonControllerTest {
 		assertThat(result.getCars()).hasSameElementsAs(cars);
 	}
 
-	@Test(expected = CustomException.class)
+	@Test(expected = DataNotFoundException.class)
 	public void testGetPersonByIdMustThrowsCustomExceptionIfPersonNotFound() {
-		when(this.personService.getById(PERSON_ID)).thenThrow(new CustomException(ExceptionMessage.PERSON_NOT_FOUND));
+		when(this.personService.getById(PERSON_ID)).thenThrow(new DataNotFoundException(ExceptionMessage.PERSON_NOT_FOUND));
 		this.personController.getPerson(PERSON_ID);
 	}
 
@@ -94,9 +94,9 @@ public class PersonControllerTest {
 		assertThat(result.get(0).getPersons()).hasSameElementsAs(this.persons);
 	}
 
-	@Test(expected = CustomException.class)
+	@Test(expected = DataNotFoundException.class)
 	public void testFindCarsByPersonIdMustThrowsCustomExceptionIfPersonNotFound() {
-		when(this.personService.findCarsByPersonId(PERSON_ID)).thenThrow(new CustomException(ExceptionMessage.PERSON_NOT_FOUND));
+		when(this.personService.findCarsByPersonId(PERSON_ID)).thenThrow(new DataNotFoundException(ExceptionMessage.PERSON_NOT_FOUND));
 		this.personController.getReservedCarsByPerson(PERSON_ID);
 	}
 

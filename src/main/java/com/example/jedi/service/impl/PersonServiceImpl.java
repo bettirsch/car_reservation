@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.jedi.exception.CustomException;
+import com.example.jedi.exception.DataNotFoundException;
 import com.example.jedi.exception.ExceptionMessage;
 import com.example.jedi.mapper.PersonMapper;
 import com.example.jedi.mapper.model.Car;
@@ -26,12 +26,12 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	@Override
-	public Person getById(Integer id) throws CustomException {
-		return personMapper.selectOne(id).orElseThrow(() -> new CustomException(ExceptionMessage.PERSON_NOT_FOUND));
+	public Person getById(Integer id) throws DataNotFoundException {
+		return personMapper.selectOne(id).orElseThrow(() -> new DataNotFoundException(ExceptionMessage.PERSON_NOT_FOUND));
 	}
 
 	@Override
-	public List<Car> findCarsByPersonId(Integer personId) throws CustomException {
+	public List<Car> findCarsByPersonId(Integer personId) throws DataNotFoundException {
 		return this.getById(personId).getCars();
 	}
 }

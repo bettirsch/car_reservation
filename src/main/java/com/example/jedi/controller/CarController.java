@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.jedi.exception.CustomException;
+import com.example.jedi.exception.DataNotFoundException;
 import com.example.jedi.mapper.model.Car;
 import com.example.jedi.service.CarService;
 
@@ -27,7 +27,7 @@ public class CarController {
 	}
 
 	@GetMapping("/{id}")
-	public Car getCarById(@PathVariable Integer id) throws CustomException {
+	public Car getCarById(@PathVariable Integer id) throws DataNotFoundException {
 		return carService.getById(id);
 	}
 

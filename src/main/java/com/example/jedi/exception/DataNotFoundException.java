@@ -2,19 +2,19 @@ package com.example.jedi.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class CustomException extends RuntimeException {
+public class DataNotFoundException extends RuntimeException {
 
 	private static final long serialVersionUID = -5995709464885568662L;
 	
 	private final HttpStatus httpStatus;
 	
-	public CustomException(ExceptionMessage messageCode) {
+	public DataNotFoundException(ExceptionMessage messageCode) {
 		super(messageCode.getMessage());
-		this.httpStatus = messageCode.getHttpStatus();
+		this.httpStatus = HttpStatus.NOT_FOUND;
 	}
 
 	public HttpStatus getHttpStatus() {
-		return httpStatus;
+		return this.httpStatus;
 	}
 
 }

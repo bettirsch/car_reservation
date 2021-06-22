@@ -8,10 +8,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+public class DataNotFoundExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(CustomException.class)
-	protected ResponseEntity<Object> handleConflict(CustomException ex, WebRequest request) {
+	@ExceptionHandler(DataNotFoundException.class)
+	protected ResponseEntity<Object> handleConflict(DataNotFoundException ex, WebRequest request) {
 		String bodyOfResponse = ex.getMessage();
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), ex.getHttpStatus(), request);
 	}

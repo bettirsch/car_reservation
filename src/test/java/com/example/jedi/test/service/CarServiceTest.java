@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.example.jedi.exception.CustomException;
+import com.example.jedi.exception.DataNotFoundException;
 import com.example.jedi.mapper.CarMapper;
 import com.example.jedi.mapper.model.Car;
 import com.example.jedi.mapper.model.Person;
@@ -73,7 +73,7 @@ public class CarServiceTest {
 		assertThat(result.getPersons()).isNotNull().isEmpty();
 	}
 	
-	@Test(expected = CustomException.class)
+	@Test(expected = DataNotFoundException.class)
 	public void testFindCarByIdMustThrowsCustomExceptionIfCarNotFound() {
 		when(this.carMapper.selectOne(CAR_ID)).thenReturn(Optional.empty());
 		this.carService.getById(CAR_ID);
