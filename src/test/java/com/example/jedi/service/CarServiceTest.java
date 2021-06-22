@@ -1,4 +1,4 @@
-package com.example.jedi.test.service;
+package com.example.jedi.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
