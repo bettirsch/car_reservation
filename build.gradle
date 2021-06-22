@@ -28,11 +28,23 @@ dependencies {
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1'
 	implementation 'org.mybatis.dynamic-sql:mybatis-dynamic-sql:1.1.3'
 
-	
+	implementation 'com.h2database:h2'
 	runtimeOnly 'com.h2database:h2:1.4.200'
 
 }
 
 test {
 	useJUnitPlatform()
+}
+
+configurations {
+	systemTestImplementation.extendsFrom testImplementation
+}
+sourceSets {
+	systemTest {
+		java {
+			compileClasspath += main.output
+			runtimeClasspath += main.output
+			srcDir file('src/system-test/java') }
+	}
 }

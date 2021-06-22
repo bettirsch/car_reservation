@@ -1,4 +1,4 @@
-package com.example.jedi.unittest.testingservice;
+package com.example.jedi.test.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -16,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.example.jedi.exception.CustomException;
-import com.example.jedi.mapper.CarMapper;
 import com.example.jedi.mapper.PersonMapper;
 import com.example.jedi.mapper.model.Car;
 import com.example.jedi.mapper.model.Person;
@@ -35,8 +34,6 @@ public class PersonServiceTest {
 	private static final String PERSON_LAST_NAME = "Robertson";
 	@Mock
 	private PersonMapper personMapper;
-	@Mock
-	private CarMapper carMapper;
 	
 	private PersonService personService;
 

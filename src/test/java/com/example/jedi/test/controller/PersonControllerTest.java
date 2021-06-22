@@ -1,4 +1,4 @@
-package com.example.jedi.unittest.testingcontroller;
+package com.example.jedi.test.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -47,7 +47,7 @@ public class PersonControllerTest {
 	}
 
 	@Test
-	public void testGetAllPersons() throws Exception {
+	public void testGetAllPersons() {
 		setupTestData();
 		when(this.personService.getPersons()).thenReturn(persons);
 

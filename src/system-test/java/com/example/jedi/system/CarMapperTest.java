@@ -1,4 +1,4 @@
-package com.example.jedi.integrationtest.testingmapper;
+package com.example.jedi.system;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -36,13 +36,13 @@ public class CarMapperTest {
 		assertThat(result.get().getName(), is(CAR_NAME));
 		assertThat(result.get().getPlateNumber(), is(CAR_PLATE_NUMBER));
 		assertThat(result.get().getNrOfWheel(), is(CAR_NUMBER_OF_WHEEL));
-	};
+	}
 
 	@Test
 	public void testSelectOneIsEmptyWhenCarNotFound() {
 		Optional<Car> result = this.carMapper.selectOne(546724454);
 		assertThat(result).isEmpty();
-	};
+	}
 
 	@Test
 	public void testSelect() {
@@ -53,7 +53,7 @@ public class CarMapperTest {
 		assertThat(result.get(0).getPlateNumber(), is(CAR_PLATE_NUMBER));
 		assertThat(result.get(0).getNrOfWheel(), is(CAR_NUMBER_OF_WHEEL));
 		assertThat(result.get(0).getPersons()).isNull();
-	};
+	}
 
 	@Test
 	public void testFindCarById() {

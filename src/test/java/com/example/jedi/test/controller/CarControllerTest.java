@@ -1,4 +1,4 @@
-package com.example.jedi.unittest.testingservice;
+package com.example.jedi.test.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,20 +14,20 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.example.jedi.controller.CarController;
 import com.example.jedi.exception.CustomException;
-import com.example.jedi.mapper.CarMapper;
+import com.example.jedi.exception.ExceptionMessage;
 import com.example.jedi.mapper.model.Car;
 import com.example.jedi.mapper.model.Person;
 import com.example.jedi.service.CarService;
-import com.example.jedi.service.impl.CarServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CarServiceTest {
+public class CarControllerTest {
 	
 	@Mock
-	private CarMapper carMapper;
-	
 	private CarService carService;
+	
+	private CarController carController;
 
 	private List<Car> cars;
 	private Car car;
@@ -41,30 +40,39 @@ public class CarServiceTest {
 	
 	@Before
 	public void init() {
-		this.carService = new CarServiceImpl(this.carMapper);
+		this.carController = new CarController(carService);
 	}
 	
 	@Test
-	public void testGetAllCars() {
+	public void testGetAllCars(){
 		setupTestData();
-		when(this.carMapper.select()).thenReturn(this.cars);
-
-		List<Car> result = this.carService.getAll();
+		when(this.carService.getAll()).thenReturn(cars);
+		
+		List<Car> result = this.carController.getAll();
 		assertThat(result).isNotEmpty();
 		assertThat(result.size(), is(1));
 		assertThat(result.get(0).getCarId(), is(CAR_ID));
 		assertThat(result.get(0).getName(), is(CAR_NAME));
 		assertThat(result.get(0).getPlateNumber(), is(CAR_PLATE_NUMBER));
 		assertThat(result.get(0).getNrOfWheel(), is(CAR_NUMBER_OF_WHEEL));
-		assertThat(result.get(0).getPersons()).hasSameElementsAs(PERSONS);
+		assertThat(result.get(0).getPersons(), is(PERSONS));
 	}
-
+	
+	@Test
+	public void testGetAllCarsEmpty(){
+		this.cars = new ArrayList<>();
+		when(this.carService.getAll()).thenReturn(new ArrayList<>());
+		
+		List<Car> result = this.carController.getAll();
+		assertThat(result).isNotNull().isEmpty();
+	}
+	
 	@Test
 	public void testFindCarById() {
 		setupTestData();
-		when(this.carMapper.selectOne(CAR_ID)).thenReturn(Optional.of(this.car));
+		when(this.carService.getById(CAR_ID)).thenReturn(this.car);
 		
-		Car result = this.carService.getById(CAR_ID);
+		Car result = this.carController.getCarById(CAR_ID);
 		assertThat(result).isNotNull();
 		assertThat(result.getCarId(), is(CAR_ID));
 		assertThat(result.getName(), is(CAR_NAME));
@@ -75,8 +83,8 @@ public class CarServiceTest {
 	
 	@Test(expected = CustomException.class)
 	public void testFindCarByIdMustThrowsCustomExceptionIfCarNotFound() {
-		when(this.carMapper.selectOne(CAR_ID)).thenReturn(Optional.empty());
-		this.carService.getById(CAR_ID);
+		when(this.carService.getById(CAR_ID)).thenThrow(new CustomException(ExceptionMessage.CAR_NOT_FOUND));
+		this.carController.getCarById(CAR_ID);
 	}
 	
 	private void setupTestData() {
