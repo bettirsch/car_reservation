@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.jedi.repository.CarRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,17 +17,15 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.example.jedi.exception.DataNotFoundException;
-import com.example.jedi.mapper.CarMapper;
 import com.example.jedi.mapper.model.Car;
 import com.example.jedi.mapper.model.Person;
-import com.example.jedi.service.CarService;
 import com.example.jedi.service.impl.CarServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CarServiceTest {
 	
 	@Mock
-	private CarMapper carMapper;
+	private CarRepository carRepository;
 	
 	private CarService carService;
 
@@ -41,13 +40,13 @@ public class CarServiceTest {
 	
 	@Before
 	public void init() {
-		this.carService = new CarServiceImpl(this.carMapper);
+		this.carService = new CarServiceImpl(this.carRepository);
 	}
 	
 	@Test
 	public void testGetAllCars() {
 		setupTestData();
-		when(this.carMapper.select()).thenReturn(this.cars);
+		when(this.carRepository.selectAllCars()).thenReturn(this.cars);
 
 		List<Car> result = this.carService.getAll();
 		assertThat(result).isNotEmpty();
@@ -62,7 +61,7 @@ public class CarServiceTest {
 	@Test
 	public void testFindCarById() {
 		setupTestData();
-		when(this.carMapper.selectOne(CAR_ID)).thenReturn(Optional.of(this.car));
+		when(this.carRepository.selectCarById(CAR_ID)).thenReturn(Optional.of(this.car));
 		
 		Car result = this.carService.getById(CAR_ID);
 		assertThat(result).isNotNull();
@@ -75,7 +74,7 @@ public class CarServiceTest {
 	
 	@Test(expected = DataNotFoundException.class)
 	public void testFindCarByIdMustThrowsCustomExceptionIfCarNotFound() {
-		when(this.carMapper.selectOne(CAR_ID)).thenReturn(Optional.empty());
+		when(this.carRepository.selectCarById(CAR_ID)).thenReturn(Optional.empty());
 		this.carService.getById(CAR_ID);
 	}
 	

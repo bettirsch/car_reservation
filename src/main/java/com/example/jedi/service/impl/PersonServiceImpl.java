@@ -2,6 +2,7 @@ package com.example.jedi.service.impl;
 
 import java.util.List;
 
+import com.example.jedi.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 
 import com.example.jedi.exception.DataNotFoundException;
@@ -14,20 +15,20 @@ import com.example.jedi.service.PersonService;
 @Service
 public class PersonServiceImpl implements PersonService {
 
-	private PersonMapper personMapper;
+	private PersonRepository personRepository;
 
-	public PersonServiceImpl(PersonMapper personMapper) {
-		this.personMapper = personMapper;
+	public PersonServiceImpl(PersonRepository personRepository) {
+		this.personRepository = personRepository;
 	}
 
 	@Override
 	public List<Person> getPersons() {
-		return personMapper.select();
+		return personRepository.selectAllPersons();
 	}
 
 	@Override
 	public Person getById(Integer id) throws DataNotFoundException {
-		return personMapper.selectOne(id).orElseThrow(() -> new DataNotFoundException(ExceptionMessage.PERSON_NOT_FOUND));
+		return personRepository.selectPersonById(id).orElseThrow(() -> new DataNotFoundException(ExceptionMessage.PERSON_NOT_FOUND));
 	}
 
 	@Override
