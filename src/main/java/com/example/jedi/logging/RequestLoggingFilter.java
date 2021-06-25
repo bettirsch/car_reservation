@@ -1,4 +1,4 @@
-package com.example.jedi.util;
+package com.example.jedi.logging;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package com.example.jedi.util;
+package com.example.jedi.logging;
 
 import java.util.Arrays;
 import java.util.Collection;
